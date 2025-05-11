@@ -1,2 +1,2 @@
 # Blind-Box-Marketplace
-A place to sell or buy certain blind box pulls.
+A dedicated platform for buying, selling, and trading blind box collectibles containing random figurines or items. Whether you're a casual collector or a serious trader, this platform makes managing your collection seamless and fun.
