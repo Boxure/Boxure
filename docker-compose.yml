@@ -1,0 +1,26 @@
+version: '3.9'
+
+services:
+  frontend:
+    build:
+      context: ./boxure-frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./boxure-frontend:/app
+    environment:
+      - NODE_ENV=development
+    depends_on:
+      - backend
+      
+  backend:
+    build:
+      context: ./boxure-services
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./boxure-services:/app
+    environment:
+      - NODE_ENV=development
