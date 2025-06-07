@@ -3,6 +3,9 @@ A dedicated platform for buying, selling, and trading blind box collectibles con
 
 <h2>Getting Started</h2>
 
+<p>To connect and run SQL commands, use:</p>
+<pre><code>docker exec -it boxure-db-1 psql -U postgres -d test_db</code></pre>
+
 <p>Build the Docker containers:</p>
 <pre><code>docker compose build</code></pre>
 
