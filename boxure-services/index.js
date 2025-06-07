@@ -8,7 +8,7 @@ app.use(express.json());
 
 const client = new Client({
   user: 'postgres',
-  host: 'localhost',
+  host: 'db',
   database: 'test_db',
   password: 'yourpassword',
   port: 5432,

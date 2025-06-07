@@ -1,8 +1,8 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-// import { auth } from './firebase';
-// import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from './firebase';
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 function Login() {
   const navigate = useNavigate();
@@ -23,7 +23,12 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      //await signInWithEmailAndPassword(auth, form.email, form.password);
+      // Firebase Authentication
+      const auth = getAuth();
+      const userCredential = await signInWithEmailAndPassword(auth, form.email, form.password);
+      console.log("Firebase login successful:", userCredential.user);
+      
+      // Backend login
       fetch('http://localhost:5000/api/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -50,12 +55,6 @@ function Login() {
 
   return (
     <div className="Login">
-      <h1>Users from Backend:</h1>
-      <ul>
-        {users.map((user) => (
-          <li key={user.id}>{user.username}</li>
-        ))}
-      </ul>
       <h1>Login</h1>
       <form onSubmit={handleSubmit}>
         <br />

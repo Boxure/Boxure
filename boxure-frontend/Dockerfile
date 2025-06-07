@@ -3,9 +3,13 @@ FROM node:24
 # Set the working directory in the container
 WORKDIR /app
 
+# Copy package files
 COPY package*.json ./
 
-RUN npm install
+# Install dependencies
+RUN npm install && \
+    npm install firebase@latest && \
+    npm install @firebase/auth
 
 # Copy the rest of the application code
 COPY . .

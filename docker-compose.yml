@@ -9,7 +9,7 @@ services:
       - "3000:3000"
     volumes:
       - ./boxure-frontend:/app
-      - frontend_node_modules:/app/node_modules
+     
     environment:
       - NODE_ENV=development
     depends_on:
@@ -28,7 +28,28 @@ services:
     command: sh -c "npm install && npm start"
     environment:
       - NODE_ENV=development
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: postgres:16
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: yourpassword
+      POSTGRES_DB: test_db
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
 volumes:
   frontend_node_modules:
   backend_node_modules:
+  postgres_data:

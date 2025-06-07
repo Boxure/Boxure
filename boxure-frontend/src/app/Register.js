@@ -1,8 +1,8 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-// import { auth } from './firebase';
-// import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from './firebase';
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 function Register() {
   const navigate = useNavigate();
@@ -24,8 +24,11 @@ function Register() {
     e.preventDefault();
     try {
       // Firebase Auth registration
-      //await createUserWithEmailAndPassword(auth, form.email, form.password);
-      // Optionally, also register in your backend
+      const auth = getAuth();
+      const userCredential = await createUserWithEmailAndPassword(auth, form.email, form.password);
+      console.log("Firebase registration successful:", userCredential.user);
+      
+      // Backend registration
       fetch('http://localhost:5000/api/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -46,22 +49,14 @@ function Register() {
     navigate('/login');
   }
   
-
   return (
     <div className="App">
-      <h1>Users from Backend:</h1>
-      <ul>
-        {users.map((user) => (
-          <li key={user.id}>{user.username}</li>
-        ))}
-      </ul>
       <h1>Register</h1>
       <form onSubmit={handleSubmit}>
-      
-		<label>Email:
-		  <input type="email" name="email" value={form.email} onChange={handleChange} required />
-		</label>
-		<br />
+        <label>Email:
+          <input type="email" name="email" value={form.email} onChange={handleChange} required />
+        </label>
+        <br />
         <label>Username:
           <input type="text" name="username" value={form.username} onChange={handleChange} required />
         </label>
