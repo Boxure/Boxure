@@ -14,3 +14,11 @@ A dedicated platform for buying, selling, and trading blind box collectibles con
 
 <p>To remove the current containers:</p>
 <pre><code>docker compose down</code></pre>
+
+<h2>Front-end Structure</h2>
+<p>Global components go under src/app/components</p>
+<p>Page files are their page-specific components are under src/app/'page-name'</p>
+<p>Config files such as firebase.js will go under src/config</p>
+<p>Global css will go under src/styles<p>
+
+

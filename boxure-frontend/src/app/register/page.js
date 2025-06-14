@@ -1,13 +1,13 @@
-"use client";
+'use client';
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { auth } from './firebase';
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { useRouter } from 'next/navigation';
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from '@/config/firebase'; // Adjust this path depending on where your firebase config lives
 
 function Register() {
-  const navigate = useNavigate();
+  const router = useRouter();
   const [users, setUsers] = useState([]);
-  const [form, setForm] = useState({email: '', username: '', password: '' });
+  const [form, setForm] = useState({ email: '', username: '', password: '' });
 
   useEffect(() => {
     fetch('http://localhost:5000/api/users')
@@ -23,32 +23,29 @@ function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Firebase Auth registration
-      const auth = getAuth();
+      // Firebase registration
       const userCredential = await createUserWithEmailAndPassword(auth, form.email, form.password);
       console.log("Firebase registration successful:", userCredential.user);
       
-      // Backend registration
-      fetch('http://localhost:5000/api/register', {
+      // Backend registration (optional)
+      const res = await fetch('http://localhost:5000/api/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
-      })
-        .then(res => res.json())
-        .then(data => {
-          alert(data.message);
-          setForm({email: '', username: '', password: '' });
-        })
-        .catch(err => alert('Error: ' + err));
+      });
+      const data = await res.json();
+      alert(data.message);
+
+      setForm({ email: '', username: '', password: '' });
     } catch (error) {
       alert(error.message);
     }
   };
 
-  const handleLogin = (e) => {
-    navigate('/login');
+  const handleLogin = () => {
+    router.push('/login');
   }
-  
+
   return (
     <div className="App">
       <h1>Register</h1>
