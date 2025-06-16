@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { useRouter } from "navigation";
+import { useRouter } from "next/navigation";
 
 function Market() {
   const router = useRouter();
