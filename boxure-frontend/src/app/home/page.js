@@ -9,10 +9,20 @@ function Home() {
     router.push("/market");
   };
 
+  const handleLogin = () => {
+    router.push("/login");
+  };
+
+  const handleRegister = () => {
+    router.push("/register");
+  };
+
   return (
     <div className="Home">
       <h1>Welcome to the Home Page!</h1>
       <button onClick={handleMarket}>Market</button>
+      <button onClick={handleLogin}>Login</button>
+      <button onClick={handleRegister}>Register</button>
     </div>
   );
 }
