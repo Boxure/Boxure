@@ -26,6 +26,16 @@ app.get('/api/users', (req, res) => {
   });
 });
 
+app.get('/api/items', (req, res) => {
+  client.query('SELECT * FROM items', (err, result) => {
+    if (err) {
+      console.error('Error executing query', err);
+      return res.status(500).send('Error fetching items');
+    }
+    res.json(result.rows);
+  });
+});
+
 app.post('/api/register', (req, res) => {
   const {email, username, password } = req.body;
   // ** You should hash the password before storing in production! **
