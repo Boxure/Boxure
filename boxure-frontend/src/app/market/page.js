@@ -34,7 +34,9 @@ function Market() {
         {items.map(item => (
           <div
             key={item.id}
+            onClick={() => router.push(`/market/${item.id}`)}
             style={{
+              cursor: "pointer",
               border: '1px solid #ccc',
               borderRadius: '8px',
               padding: '12px',
@@ -62,6 +64,7 @@ function Market() {
               onError={e => { e.target.src = QUESTION_MARK_IMG; }}
             />
             <h2 style={{ fontSize: '1.1rem', textAlign: 'center', margin: 0, color: '#000' }}>{item.name}</h2>
+            <p style={{ fontSize: '0.9rem', textAlign: 'center', margin: 0, color: '#000' }}>{item.price}</p>
           </div>
         ))}
       </div>

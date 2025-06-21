@@ -71,6 +71,20 @@ app.post('/api/login', (req, res) => {
   );
 });
 
+app.get('/api/items/:id', (req, res) => {
+  const { id } = req.params;
+  client.query('SELECT * FROM items WHERE id = $1', [id], (err, result) => {
+    if (err) {
+      console.error('Error executing query', err);
+      return res.status(500).send('Error fetching item');
+    }
+    if (result.rows.length === 0) {
+      return res.status(404).send('Item not found');
+    }
+    res.json(result.rows[0]);
+  });
+});
+
 app.listen(5000, () => {
   console.log('Backend is running on http://localhost:5000');
 });
