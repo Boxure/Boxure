@@ -2,6 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from "next/navigation";
 
+const QUESTION_MARK_IMG = "https://upload.wikimedia.org/wikipedia/commons/5/55/Question_Mark.svg"; // public domain
+
 function Market() {
   const router = useRouter();
   const [items, setItems] = useState([]);
@@ -13,7 +15,7 @@ function Market() {
       .catch(error => console.error('Error fetching items:', error));
   }, []);
 
-  const handleHome = (e) => {
+  const handleHome = () => {
     router.push("/home");
   };
 
@@ -21,20 +23,45 @@ function Market() {
     <div className="Market">
       <h1>Welcome to the Market Place!</h1>
       <button onClick={handleHome}>Home</button>
-      <div>
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(5, 1fr)",
+          gap: "24px",
+          marginTop: "32px"
+        }}
+      >
         {items.map(item => (
-          <div key={item.id} style={{
-            border: '1px solid #ccc',
-            borderRadius: '8px',
-            padding: '16px',
-            marginBottom: '16px',
-            marginTop: '16px',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.05)'
-          }}>
-            <h2>{item.name}</h2>
-            <p>{item.description}</p>
-            <p>Price: ${item.price}</p>
-            <p>Quantity: {item.quantity}</p>
+          <div
+            key={item.id}
+            style={{
+              border: '1px solid #ccc',
+              borderRadius: '8px',
+              padding: '12px',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              aspectRatio: '1 / 1',
+              width: '100%',
+              justifyContent: 'center',
+              background: '#fff'
+            }}
+          >
+            <img
+              src={item.image_url || QUESTION_MARK_IMG}
+              alt={item.name}
+              style={{
+                width: '60%',
+                height: '60%',
+                objectFit: 'cover',
+                marginBottom: '12px',
+                borderRadius: '4px',
+                background: '#f0f0f0'
+              }}
+              onError={e => { e.target.src = QUESTION_MARK_IMG; }}
+            />
+            <h2 style={{ fontSize: '1.1rem', textAlign: 'center', margin: 0, color: '#000' }}>{item.name}</h2>
           </div>
         ))}
       </div>

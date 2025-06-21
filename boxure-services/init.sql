@@ -14,6 +14,7 @@ CREATE TABLE IF NOT EXISTS items (
     description TEXT,
     price NUMERIC(10, 2) NOT NULL,
     quantity INTEGER NOT NULL DEFAULT 0,
+    image_url VARCHAR(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
