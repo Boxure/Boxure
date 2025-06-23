@@ -29,7 +29,7 @@ export default function ItemDetail() {
         alt={item.name}
         style={{ width: "100%", aspectRatio: "1/1", objectFit: "cover", marginBottom: 16, borderRadius: 4 }}
       />
-      <h1 style={{ color: "#000" }}>{item.name}</h1>
+      <h1 style={{ color: "white" }}>{item.name}</h1>
       <p><strong>Description:</strong> {item.description}</p>
       <p><strong>Price:</strong> ${item.price}</p>
       <p><strong>Quantity:</strong> {item.quantity}</p>
