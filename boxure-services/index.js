@@ -85,6 +85,22 @@ app.get('/api/items/:id', (req, res) => {
   });
 });
 
+
+app.post('/api/items', (req, res) => {
+  const { name, description, price, quantity, image_url } = req.body;
+  client.query(
+    'INSERT INTO items (name, description, price, quantity, image_url) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+    [name, description, price, quantity, image_url],
+    (err, result) => {
+      if (err) {
+        console.error('Error inserting item', err);
+        return res.status(500).send('Error inserting item');
+      }
+      res.status(201).json(result.rows[0]);
+    }
+  );
+});
+
 app.listen(5000, () => {
   console.log('Backend is running on http://localhost:5000');
 });

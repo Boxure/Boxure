@@ -19,10 +19,15 @@ function Market() {
     router.push("/home");
   };
 
+  const handleAddBox = () => {
+    router.push("/add-box");
+  };
+
   return (
     <div className="Market">
       <h1>Welcome to the Market Place!</h1>
       <button onClick={handleHome}>Home</button>
+      <button onClick={handleAddBox}>Add Your Own Box</button>
       <div
         style={{
           display: "grid",
