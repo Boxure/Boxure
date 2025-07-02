@@ -1,8 +1,7 @@
-// ✅ Mock the pg client to prevent real DB calls
 jest.mock('pg', () => {
   const mClient = {
-    connect: jest.fn(),
-    query: jest.fn().mockResolvedValue({ rows: [] }), // mock any SELECT, etc.
+    connect: jest.fn().mockResolvedValue(),
+    query: jest.fn().mockResolvedValue({ rows: [] }),
   };
   return { Client: jest.fn(() => mClient) };
 });
