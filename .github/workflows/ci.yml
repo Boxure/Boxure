@@ -43,12 +43,12 @@ jobs:
 
       - name: Install and Test Backend
         run: |
-          cd backend
+          cd boxure-services
           npm install
           npm test
 
       - name: Install and Build Frontend
         run: |
-          cd frontend
+          cd boxure-frontend
           npm install
           npm run build
