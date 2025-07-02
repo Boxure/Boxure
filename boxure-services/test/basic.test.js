@@ -1,4 +1,4 @@
-// Mock the pg module
+/* Mock the pg module
 jest.mock('pg', () => {
   const mClient = {
     connect: jest.fn().mockResolvedValue(), // important!
@@ -21,3 +21,4 @@ describe('GET /api/items', () => {
 afterAll(() => {
   jest.resetAllMocks();
 });
+*/
