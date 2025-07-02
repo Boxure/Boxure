@@ -4,7 +4,7 @@
   "description": "backend services for boxure",
   "main": "server.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "node server.js",
     "test": "npx jest"
   },
   "author": "",
