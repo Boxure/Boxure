@@ -45,6 +45,7 @@ jobs:
         run: |
           cd boxure-services
           npm install
+          chmod +x ./node_modules/.bin/jest
           npm test
 
       - name: Install and Build Frontend
