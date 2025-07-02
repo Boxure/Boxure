@@ -1,3 +1,4 @@
+// app.js
 const express = require('express');
 const cors = require('cors');
 const { Client } = require('pg');
@@ -18,11 +19,11 @@ client.connect();
 
 app.get('/api/users', (req, res) => {
   client.query('SELECT * FROM users', (err, result) => {
-	if (err) {
-  	console.error('Error executing query', err);
-  	return res.status(500).send('Error fetching users');
-	}
-	res.json(result.rows);
+    if (err) {
+      console.error('Error executing query', err);
+      return res.status(500).send('Error fetching users');
+    }
+    res.json(result.rows);
   });
 });
 
@@ -37,8 +38,7 @@ app.get('/api/items', (req, res) => {
 });
 
 app.post('/api/register', (req, res) => {
-  const {email, username, password } = req.body;
-  // ** You should hash the password before storing in production! **
+  const { email, username, password } = req.body;
   client.query(
     'INSERT INTO users (username, password, email) VALUES ($1, $2, $3) RETURNING *',
     [username, password, email],
@@ -53,7 +53,7 @@ app.post('/api/register', (req, res) => {
 });
 
 app.post('/api/login', (req, res) => {
-  const {email, password } = req.body;
+  const { email, password } = req.body;
   client.query(
     'SELECT * FROM users WHERE email = $1 AND password = $2',
     [email, password],
@@ -71,6 +71,4 @@ app.post('/api/login', (req, res) => {
   );
 });
 
-app.listen(5000, () => {
-  console.log('Backend is running on http://localhost:5000');
-});
+module.exports = app;
