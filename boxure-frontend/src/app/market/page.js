@@ -7,12 +7,20 @@ const QUESTION_MARK_IMG = "https://upload.wikimedia.org/wikipedia/commons/5/55/Q
 function Market() {
   const router = useRouter();
   const [items, setItems] = useState([]);
+  const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
     fetch('http://localhost:5000/api/items')
       .then(response => response.json())
       .then(data => setItems(data))
       .catch(error => console.error('Error fetching items:', error));
+  }, []);
+
+  useEffect(() => {
+    fetch('http://localhost:5000/api/me', {credentials: "include"})
+      .then(res => res.ok ? res.json() : Promise.reject())
+      .then(data => setLoggedIn(!!data.user))
+      .catch(() => setLoggedIn(false));
   }, []);
 
   const handleHome = () => {
@@ -27,7 +35,11 @@ function Market() {
     <div className="Market">
       <h1>Welcome to the Market Place!</h1>
       <button onClick={handleHome}>Home</button>
-      <button onClick={handleAddBox}>Add Your Own Box</button>
+      {loggedIn ? (
+        <button onClick={handleAddBox}>Add Your Own Box</button>
+      ) : (
+        <p>You must be logged in to add a box.</p>
+      )}
       <div
         style={{
           display: "grid",

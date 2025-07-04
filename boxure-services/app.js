@@ -1,11 +1,23 @@
 // app.js
 const express = require('express');
+const session = require('express-session');
 const cors = require('cors');
 const { Client } = require('pg');
 
 const app = express();
-app.use(cors());
 app.use(express.json());
+
+app.use(cors({
+  origin: 'http://localhost:3000',
+  credentials: true
+}));
+
+app.use(session({
+  secret: 'your-secret-key',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false }
+}));
 
 const client = new Client({
   user: 'postgres',
@@ -54,6 +66,7 @@ app.post('/api/login', (req, res) => {
         return res.status(500).json({ message: 'Error logging in' });
       }
       if (result.rows.length > 0) {
+        req.session.user = result.rows[0];
         res.json({ message: 'Login successful', user: result.rows[0] });
       } else {
         res.status(401).json({ message: 'Invalid credentials' });
@@ -86,7 +99,15 @@ app.get('/api/items/:id', (req, res) => {
   });
 });
 
-app.post('/api/items', (req, res) => {
+function isAuthenticated(req, res, next) {
+  if (req.session && req.session.user) {
+    return next();
+  } else {
+    return res.status(401).json({ message: 'Unauthorized' });
+  }
+}
+
+app.post('/api/items', isAuthenticated, (req, res) => {
   const { name, description, price, quantity, image_url } = req.body;
   client.query(
     'INSERT INTO items (name, description, price, quantity, image_url) VALUES ($1, $2, $3, $4, $5) RETURNING *',
@@ -99,6 +120,15 @@ app.post('/api/items', (req, res) => {
       res.status(201).json(result.rows[0]);
     }
   );
+});
+
+// route to check if user is logged in
+app.get('/api/me', (req, res) => {
+  if (req.session && req.session.user) {
+    res.json({ user: req.session.user });
+  } else {
+    res.status(401).json({ user: null });
+  }
 });
 
 module.exports = app;
