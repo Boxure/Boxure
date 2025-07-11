@@ -18,11 +18,19 @@ function Home() {
   };
 
   return (
-    <div className="Home">
-      <h1>Welcome to the Home Page!</h1>
-      <button onClick={handleMarket}>Market</button>
-      <button onClick={handleLogin}>Login</button>
-      <button onClick={handleRegister}>Register</button>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+      <h1 className="text-2xl font-bold mb-4">Welcome to the Home Page!</h1>
+      <div className="flex space-x-4">
+        <button onClick={handleMarket} className="btn">
+          Market
+        </button>
+        <button onClick={handleLogin} className="btn">
+          Login
+        </button>
+        <button onClick={handleRegister} className="btn">
+          Register
+        </button>
+      </div>
     </div>
   );
 }
