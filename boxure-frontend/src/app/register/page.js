@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from '@/config/firebase'; // Adjust this path depending on where your firebase config lives
+import Navbar from "@/components/Navbar";
 
 function Register() {
   const router = useRouter();
@@ -48,6 +49,7 @@ function Register() {
 
   return (
     <div className="App">
+      <Navbar className="bg-white shadow-md w-full p-4" />
       <h1>Register</h1>
       <form onSubmit={handleSubmit}>
         <label>Email:

@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import { useRouter } from "next/navigation";
+import Navbar from "@/components/Navbar";
 
 const QUESTION_MARK_IMG = "https://upload.wikimedia.org/wikipedia/commons/5/55/Question_Mark.svg"; // public domain
 
@@ -33,6 +34,7 @@ function Market() {
 
   return (
     <div className="Market">
+      <Navbar className="bg-white shadow-md w-full p-4" />
       <h1>Welcome to the Market Place!</h1>
       <button onClick={handleHome}>Home</button>
       {loggedIn ? (

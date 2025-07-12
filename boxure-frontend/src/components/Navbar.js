@@ -14,53 +14,31 @@ import {
 
 export default function Navbar() {
   return (
-    <div className="">
-      <NavigationMenu>
+    <div className="flex flex-row items-center p-2">
+      <NavigationMenu className="w-full">
         <h1 className="text-2xl font-bold">Boxure</h1>
-        <NavigationMenuList>
+        <NavigationMenuList className="gap-1">
           <NavigationMenuItem>
-            <NavigationMenuTrigger>Home</NavigationMenuTrigger>
-            <NavigationMenuContent>
-            </NavigationMenuContent>
-          </NavigationMenuItem>
-          <NavigationMenuItem>
-            <NavigationMenuTrigger>Marketplace</NavigationMenuTrigger>
-            <NavigationMenuContent>
-              <ul className="grid gap-3 p-4">
-                <li>
-                  <Link href="/components/button" className={navigationMenuTriggerStyle()}>
-                    Button
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/components/card" className={navigationMenuTriggerStyle()}>
-                    Card
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/components/modal" className={navigationMenuTriggerStyle()}>
-                    Modal
-                  </Link>
-                </li>
-              </ul>
-            </NavigationMenuContent>
-          </NavigationMenuItem>
-          <NavigationMenuItem>
-            <NavigationMenuLink asChild>
+            <NavigationMenuLink href="/" className={navigationMenuTriggerStyle()}>
+              Home
             </NavigationMenuLink>
           </NavigationMenuItem>
           <NavigationMenuItem>
-            <NavigationMenuTrigger>List</NavigationMenuTrigger>
-            <NavigationMenuContent>
-            </NavigationMenuContent>
+            <NavigationMenuLink href="/market" className={navigationMenuTriggerStyle()}>
+              Marketplace
+            </NavigationMenuLink>
           </NavigationMenuItem>
           <NavigationMenuItem>
-            <NavigationMenuTrigger>Simple</NavigationMenuTrigger>
-            <NavigationMenuContent>
-            </NavigationMenuContent>
+            <NavigationMenuLink href="/login" className={navigationMenuTriggerStyle()}>
+              Login
+            </NavigationMenuLink>
+          </NavigationMenuItem>
+          <NavigationMenuItem>
+            <NavigationMenuLink href="/register" className={navigationMenuTriggerStyle()}>
+              Register
+            </NavigationMenuLink>
           </NavigationMenuItem>
         </NavigationMenuList>
-        <NavigationMenuViewport className="absolute inset-0 z-10" />
       </NavigationMenu>
     </div>
   )

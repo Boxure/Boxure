@@ -22,7 +22,8 @@ function Home() {
     <div>
       <Navbar className="bg-white shadow-md w-full p-4" />
       <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-        <h1 className="text-2xl font-bold mb-4">Welcome to the Home Page!</h1>
+        <h1 className="text-5xl font-bold mb-4">Welcome to Boxure! </h1>
+        <p className="text-xl mb-6">A place to sell and buy blind box pulls.</p>
         <div className="flex space-x-4">
           <button onClick={handleMarket} className="btn">
             Market

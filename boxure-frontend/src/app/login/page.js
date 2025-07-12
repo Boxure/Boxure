@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from '@/config/firebase';  // assuming you put your firebase config in lib/firebase.js
+import Navbar from "@/components/Navbar";
 
 function Login() {
   const router = useRouter();
@@ -44,6 +45,7 @@ function Login() {
 
   return (
     <div className="Login">
+      <Navbar className="bg-white shadow-md w-full p-4" />
       <h1>Login</h1>
       <form onSubmit={handleSubmit}>
         <label>Email:
