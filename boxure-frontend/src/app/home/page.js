@@ -2,6 +2,7 @@
 import React from "react";
 import { useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
+import { Button } from "@/components/ui/button";
 
 function Home() {
   const router = useRouter();
@@ -25,15 +26,9 @@ function Home() {
         <h1 className="text-5xl font-bold mb-4">Welcome to Boxure! </h1>
         <p className="text-xl mb-6">A place to sell and buy blind box pulls.</p>
         <div className="flex space-x-4">
-          <button onClick={handleMarket} className="btn">
-            Market
-          </button>
-          <button onClick={handleLogin} className="btn">
-            Login
-          </button>
-          <button onClick={handleRegister} className="btn">
-            Register
-          </button>
+          <Button onClick={handleMarket}>Market</Button>
+          <Button onClick={handleLogin}>Login</Button>
+          <Button onClick={handleRegister}>Register</Button>
         </div>
       </div>
     </div>
