@@ -113,7 +113,7 @@ function Register() {
             </form>
             </CardContent>
             <CardFooter className="flex-col gap-2">
-            <Button type="submit" className="w-full">
+            <Button type="submit" className="w-full" onClick={handleSubmit}>
               Register
             </Button>
             <Button type="button" variant="outline" onClick={handleLogin} className="w-full">

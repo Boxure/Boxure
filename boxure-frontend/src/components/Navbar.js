@@ -1,4 +1,5 @@
-import * as React from "react"
+// import * as React from "react"
+import React, { useState, useEffect } from 'react';
 import Link from "next/link"
 
 import {
@@ -14,6 +15,16 @@ import {
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 
 export default function Navbar() {
+  const [loggedIn, setLoggedIn] = useState(false);
+  useEffect(() => {
+    fetch('http://localhost:5000/api/me', {credentials: "include"})
+      .then(res => res.ok ? res.json() : Promise.reject())
+      .then(data => setLoggedIn(!!data.user))
+      .catch(() => setLoggedIn(false));
+  }, []);
+
+  
+
   return (
     <div className="flex flex-row items-center justify-between p-2">
       <h1 className="text-2xl font-bold">Boxure</h1>
@@ -38,6 +49,13 @@ export default function Navbar() {
             <NavigationMenuLink href="/register" className={navigationMenuTriggerStyle()}>
               Register
             </NavigationMenuLink>
+          </NavigationMenuItem>
+          <NavigationMenuItem>
+            {loggedIn ? (
+              <NavigationMenuLink href="/logout" className={navigationMenuTriggerStyle()}>
+              Logout
+            </NavigationMenuLink>
+            ) : null}
           </NavigationMenuItem>
           <NavigationMenuItem>
             <Avatar className="h-8 w-8 cursor-pointer">
