@@ -24,6 +24,7 @@ export default function AddBox() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
+        credentials: 'include',
       });
       if (!response.ok) throw new Error('Failed to add item');
       const data = await response.json();
