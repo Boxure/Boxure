@@ -6,7 +6,7 @@ export default function LogoutPage() {
   const router = useRouter();
 
   const handleLogout = async () => {
-    await fetch("http://localhost:5000/api/logout", {
+    await fetch("http://localhost:5000/api/auth/logout", {
       method: "POST",
       credentials: "include"
     });

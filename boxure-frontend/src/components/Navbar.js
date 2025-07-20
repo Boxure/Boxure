@@ -17,7 +17,7 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 export default function Navbar() {
   const [loggedIn, setLoggedIn] = useState(false);
   useEffect(() => {
-    fetch('http://localhost:5000/api/me', {credentials: "include"})
+    fetch('http://localhost:5000/api/user/me', {credentials: "include"})
       .then(res => res.ok ? res.json() : Promise.reject())
       .then(data => setLoggedIn(!!data.user))
       .catch(() => setLoggedIn(false));
