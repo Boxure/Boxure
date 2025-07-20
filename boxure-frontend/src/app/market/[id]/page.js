@@ -1,4 +1,6 @@
 "use client";
+
+//The item detail page specifically for displaying details of a single item
 import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 

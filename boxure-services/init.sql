@@ -18,3 +18,11 @@ CREATE TABLE IF NOT EXISTS items (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Create private messages table
+CREATE TABLE IF NOT EXISTS messages (
+  id            SERIAL      PRIMARY KEY,
+  sender_id     INTEGER     NOT NULL REFERENCES users(id),
+  recipient_id  INTEGER     NOT NULL REFERENCES users(id),
+  content       TEXT        NOT NULL,
+  created_at    TIMESTAMP   DEFAULT CURRENT_TIMESTAMP
+);

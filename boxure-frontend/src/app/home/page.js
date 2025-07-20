@@ -1,10 +1,20 @@
 "use client";
-import React from "react";
+// The home page of the application, displaying a welcome message and navigation options
+
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
 
 function Home() {
+  const [loggedIn, setLoggedIn] = useState(false);
+  useEffect(() => {
+      fetch('http://localhost:5000/api/users/me', {credentials: "include"})
+        .then(res => res.ok ? res.json() : Promise.reject())
+        .then(data => setLoggedIn(!!data.user))
+        .catch(() => setLoggedIn(false));
+  }, []);
+
   const router = useRouter();
 
   const handleMarket = () => {
@@ -18,7 +28,6 @@ function Home() {
   const handleRegister = () => {
     router.push("/register");
   };
-
   return (
     <div>
       <Navbar className="bg-white shadow-md w-full p-4" />
@@ -26,9 +35,16 @@ function Home() {
         <h1 className="text-5xl font-bold mb-4">Welcome to Boxure! </h1>
         <p className="text-xl mb-6">A place to sell and buy blind box pulls.</p>
         <div className="flex space-x-4">
-          <Button onClick={handleMarket}>Market</Button>
-          <Button onClick={handleLogin}>Login</Button>
-          <Button onClick={handleRegister}>Register</Button>
+          {loggedIn ? (
+            <>
+              <Button onClick={handleMarket}>Market</Button>
+            </>
+          ) : (
+            <>
+              <Button onClick={handleLogin}>Login</Button>
+              <Button onClick={handleRegister}>Register</Button>
+            </>
+          )}
         </div>
       </div>
     </div>

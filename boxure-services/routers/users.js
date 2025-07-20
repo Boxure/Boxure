@@ -1,9 +1,9 @@
-// routes/user.js
+// routes/users.js
 const express = require('express');
 const router = express.Router();
 const client = require('../db'); // Import the database client
 
-// GET /api/user
+// GET /api/users
 router.get('/', (req, res) => {
   client.query('SELECT * FROM users', (err, result) => {
     if (err) {
@@ -14,7 +14,7 @@ router.get('/', (req, res) => {
   });
 });
 
-// GET /api/user/me
+// GET /api/users/me
 router.get('/me', (req, res) => {
   if (req.session && req.session.user) {
     res.json({ user: req.session.user });

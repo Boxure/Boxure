@@ -1,6 +1,5 @@
 // import * as React from "react"
 import React, { useState, useEffect } from 'react';
-import Link from "next/link"
 
 import {
   NavigationMenu,
@@ -17,7 +16,7 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 export default function Navbar() {
   const [loggedIn, setLoggedIn] = useState(false);
   useEffect(() => {
-    fetch('http://localhost:5000/api/user/me', {credentials: "include"})
+    fetch('http://localhost:5000/api/users/me', {credentials: "include"})
       .then(res => res.ok ? res.json() : Promise.reject())
       .then(data => setLoggedIn(!!data.user))
       .catch(() => setLoggedIn(false));
@@ -41,14 +40,18 @@ export default function Navbar() {
             </NavigationMenuLink>
           </NavigationMenuItem>
           <NavigationMenuItem>
-            <NavigationMenuLink href="/login" className={navigationMenuTriggerStyle()}>
-              Login
-            </NavigationMenuLink>
+            {!loggedIn ? (
+              <NavigationMenuLink href="/login" className={navigationMenuTriggerStyle()}>
+                Login
+              </NavigationMenuLink>
+            ) : null}
           </NavigationMenuItem>
           <NavigationMenuItem>
-            <NavigationMenuLink href="/register" className={navigationMenuTriggerStyle()}>
-              Register
-            </NavigationMenuLink>
+            {!loggedIn ? (
+              <NavigationMenuLink href="/register" className={navigationMenuTriggerStyle()}>
+                Register
+              </NavigationMenuLink>
+            ) : null}
           </NavigationMenuItem>
           <NavigationMenuItem>
             {loggedIn ? (
