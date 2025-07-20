@@ -25,7 +25,7 @@ function Login() {
       console.log("Firebase login successful:", userCredential.user);
       
       // Optional backend call
-      const res = await fetch('http://localhost:5000/api/login', {
+      const res = await fetch('http://localhost:5000/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
