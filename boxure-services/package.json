@@ -2,9 +2,9 @@
   "name": "boxure-services",
   "version": "1.0.0",
   "description": "backend services for boxure",
-  "main": "server.js",
+  "main": "app.js",
   "scripts": {
-    "start": "node server.js",
+    "start": "node app.js",
     "test": "npx jest --passWithNoTests"
   },
   "author": "",
