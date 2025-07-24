@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label";
 
 function Login() {
   const router = useRouter();
-  const [form, setForm] = useState({ email: '', password: '' });
+  const [form, setForm] = useState({ emailOrUser: '', password: '' });
   const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
@@ -58,21 +58,21 @@ function Login() {
             <CardHeader>
               <CardTitle>Login to your account</CardTitle>
               <CardDescription>
-                Enter your email below to login to your account
+                Enter your email or username below to login to your account
               </CardDescription>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit}>
                 <div className="flex flex-col gap-6">
                   <div className="grid gap-2">
-                    <Label htmlFor="email">Email</Label>
+                    <Label htmlFor="emailOrUser">Email or Username</Label>
                     <Input
-                      id="email"
-                      type="email"
-                      name="email"
-                      value={form.email}
+                      id="emailOrUser"
+                      type="text"
+                      name="emailOrUser"
+                      value={form.emailOrUser}
                       onChange={handleChange}
-                      placeholder="m@example.com"
+                      placeholder="m@example.com or username"
                       required
                     />
                   </div>
