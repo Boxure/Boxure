@@ -1,8 +1,6 @@
 'use client';
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from '@/config/firebase';  // assuming you put your firebase config in lib/firebase.js
 import Navbar from "@/components/Navbar";
 import { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -20,11 +18,7 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Firebase login
-      const userCredential = await signInWithEmailAndPassword(auth, form.email, form.password);
-      console.log("Firebase login successful:", userCredential.user);
       
-      // Optional backend call
       const res = await fetch('http://localhost:5000/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

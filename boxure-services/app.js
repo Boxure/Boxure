@@ -5,6 +5,7 @@ const cors = require('cors');
 const itemsRouter = require('./routers/items');
 const authRouter = require('./routers/auth'); 
 const userRouter = require('./routers/user');
+require('dotenv').config();
 
 const app = express();
 
