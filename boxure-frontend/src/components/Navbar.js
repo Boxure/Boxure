@@ -16,11 +16,23 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 
 export default function Navbar() {
   const [loggedIn, setLoggedIn] = useState(false);
+  const [username, setUsername] = useState("");
   useEffect(() => {
-    fetch('http://localhost:5000/api/user/me', {credentials: "include"})
+    fetch('http://localhost:5000/api/user/me', { credentials: "include" })
       .then(res => res.ok ? res.json() : Promise.reject())
-      .then(data => setLoggedIn(!!data.user))
-      .catch(() => setLoggedIn(false));
+      .then(data => {
+        if (data.user) {
+          setLoggedIn(true);
+          setUsername(data.user.username); // store username
+        } else {
+          setLoggedIn(false);
+          setUsername("");
+        }
+      })
+      .catch(() => {
+        setLoggedIn(false);
+        setUsername("");
+      });
   }, []);
 
   
@@ -55,6 +67,11 @@ export default function Navbar() {
               <NavigationMenuLink href="/logout" className={navigationMenuTriggerStyle()}>
               Logout
             </NavigationMenuLink>
+            ) : null}
+          </NavigationMenuItem>
+          <NavigationMenuItem>
+            {loggedIn ? (
+              <p>Welcome {username}</p>
             ) : null}
           </NavigationMenuItem>
           <NavigationMenuItem>
