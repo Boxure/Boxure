@@ -35,7 +35,7 @@ export default function Navbar() {
       });
   }, []);
 
-  
+
 
   return (
     <div className="flex flex-row items-center justify-between p-2">
@@ -65,9 +65,14 @@ export default function Navbar() {
           <NavigationMenuItem>
             {loggedIn ? (
               <NavigationMenuLink href="/logout" className={navigationMenuTriggerStyle()}>
-              Logout
-            </NavigationMenuLink>
+                Logout
+              </NavigationMenuLink>
             ) : null}
+          </NavigationMenuItem>
+          <NavigationMenuItem>
+            <NavigationMenuLink href="/shopping-bag" className={navigationMenuTriggerStyle()}>
+              <img src="/icons/shopping-cart.svg" alt="Shopping Bag" className="h-6 w-6" />
+            </NavigationMenuLink>
           </NavigationMenuItem>
           <NavigationMenuItem>
             {loggedIn ? (
