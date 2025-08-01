@@ -1,8 +1,6 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from '@/config/firebase'; // Adjust this path depending on where your firebase config lives
 import Navbar from "@/components/Navbar";
 import { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -28,11 +26,7 @@ function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Firebase registration
-      const userCredential = await createUserWithEmailAndPassword(auth, form.email, form.password);
-      console.log("Firebase registration successful:", userCredential.user);
-      
-      // Backend registration (optional)
+      // Backend registration 
       const res = await fetch('http://localhost:5000/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -46,6 +40,7 @@ function Register() {
       alert(error.message);
     }
   };
+        
 
   const handleLogin = () => {
     router.push('/login');
