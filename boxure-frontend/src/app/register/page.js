@@ -1,6 +1,7 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { createClient } from '@supabase/supabase-js';
 import Navbar from "@/components/Navbar";
 import { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -9,14 +10,25 @@ import { Label } from "@/components/ui/label";
 
 function Register() {
   const router = useRouter();
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  );
   const [users, setUsers] = useState([]);
   const [form, setForm] = useState({ email: '', username: '', password: '' });
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/users')
-      .then(response => response.json())
-      .then(data => setUsers(data))
-      .catch(error => console.error('Error fetching data:', error));
+    // Fetch users from Supabase instead of localhost:5000
+    supabase
+      .from('users')
+      .select('*')
+      .then(({ data, error }) => {
+        if (error) {
+          console.error('Error fetching data:', error);
+        } else {
+          setUsers(data || []);
+        }
+      });
   }, []);
 
   const handleChange = (e) => {
@@ -25,23 +37,61 @@ function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log('Form data:', form);
+    console.log('Supabase URL:', process.env.NEXT_PUBLIC_SUPABASE_URL);
+    console.log('Supabase client:', supabase);
+    
     try {
-      // Backend registration 
-      const res = await fetch('http://localhost:5000/api/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
+      // Supabase Auth registration instead of backend
+      const { data, error } = await supabase.auth.signUp({
+        email: form.email,
+        password: form.password,
+        options: {
+          data: {
+            username: form.username,
+            display_name: form.username // Also set display name
+          }
+        }
       });
-      const data = await res.json();
-      alert(data.message);
+
+      console.log('Supabase response:', { data, error });
+
+      if (error) {
+        console.error('Supabase error:', error);
+        alert(error.message);
+        return;
+      }
+
+      if (data.user) {
+        // Update the users table with username
+        const { error: updateError } = await supabase
+          .from('users')
+          .update({ username: form.username })
+          .eq('id', data.user.id);
+
+        // Also update the auth user's display name
+        const { error: profileError } = await supabase.auth.updateUser({
+          data: { display_name: form.username }
+        });
+
+        if (updateError) {
+          console.error('Profile update error:', updateError);
+        }
+        
+        if (profileError) {
+          console.error('Display name update error:', profileError);
+        }
+
+        alert('Registration successful! Please check your email for confirmation.');
+      }
 
       setForm({ email: '', username: '', password: '' });
     } catch (error) {
+      console.error('Catch error:', error);
       alert(error.message);
     }
   };
         
-
   const handleLogin = () => {
     router.push('/login');
   }

@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import { useRouter } from "next/navigation";
+import { createClient } from '@supabase/supabase-js';
 import Navbar from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
 
@@ -8,33 +9,68 @@ const QUESTION_MARK_IMG = "https://upload.wikimedia.org/wikipedia/commons/5/55/Q
 
 function Market() {
   const router = useRouter();
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  );
   const [items, setItems] = useState([]);
   const [loggedIn, setLoggedIn] = useState(false);
   const [username, setUsername] = useState("");
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/items')
-      .then(response => response.json())
-      .then(data => setItems(data))
-      .catch(error => console.error('Error fetching items:', error));
+    // Fetch items from Supabase and log for debugging
+    const fetchItems = async () => {
+      const { data, error } = await supabase
+        .from('items')
+        .select('*');
+      
+      console.log('Supabase items response:', { data, error });
+      
+      if (error) {
+        console.error('Error fetching items:', error);
+      } else {
+        console.log('Items found:', data);
+        setItems(data || []);
+      }
+    };
+    
+    fetchItems();
   }, []);
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/user/me', { credentials: "include" })
-      .then(res => res.ok ? res.json() : Promise.reject())
-      .then(data => {
-        if (data.user) {
+    // Check Supabase auth session and get user data
+    const checkUser = async () => {
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        
+        if (session?.user) {
           setLoggedIn(true);
-          setUsername(data.user.username); // store username
+          
+          // Get username from users table
+          const { data: userData, error } = await supabase
+            .from('users')
+            .select('username')
+            .eq('id', session.user.id)
+            .single();
+          
+          if (userData && !error) {
+            setUsername(userData.username);
+          } else {
+            // Fallback to email if username not found
+            setUsername(session.user.email);
+          }
         } else {
           setLoggedIn(false);
           setUsername("");
         }
-      })
-      .catch(() => {
+      } catch (error) {
+        console.error('Auth check error:', error);
         setLoggedIn(false);
         setUsername("");
-      });
+      }
+    };
+
+    checkUser();
   }, []);
 
   const handleHome = () => {

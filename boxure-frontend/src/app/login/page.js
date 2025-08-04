@@ -1,6 +1,7 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { createClient } from '@supabase/supabase-js';
 import Navbar from "@/components/Navbar";
 import { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -9,14 +10,27 @@ import { Label } from "@/components/ui/label";
 
 function Login() {
   const router = useRouter();
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  );
   const [form, setForm] = useState({ emailOrUser: '', password: '' });
   const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/user/me', {credentials: "include"})
-      .then(res => res.ok ? res.json() : Promise.reject())
-      .then(data => setLoggedIn(!!data.user))
-      .catch(() => setLoggedIn(false));
+    // Check if user is already logged in with Supabase
+    const checkAuth = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      setLoggedIn(!!session);
+    };
+    checkAuth();
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      setLoggedIn(!!session);
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
 
   const handleChange = (e) => {
@@ -26,19 +40,36 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      let email = form.emailOrUser;
       
-      const res = await fetch('http://localhost:5000/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify(form),
-      });
-      const data = await res.json();
+      // If user entered username instead of email, look up the email
+      if (!form.emailOrUser.includes('@')) {
+        const { data: userData, error: userError } = await supabase
+          .from('users')
+          .select('email')
+          .eq('username', form.emailOrUser)
+          .single();
+        
+        if (userError || !userData) {
+          alert('Username not found');
+          return;
+        }
+        email = userData.email;
+      }
 
-      if (data.message === 'Login successful') {
+      // Login with Supabase Auth
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: email,
+        password: form.password,
+      });
+
+      if (error) {
+        alert(error.message);
+        return;
+      }
+
+      if (data.session) {
         router.push('/home');
-      } else {
-        alert(data.message);
       }
     } catch (error) {
       alert(error.message);
