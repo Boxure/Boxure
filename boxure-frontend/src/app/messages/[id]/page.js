@@ -1,11 +1,8 @@
 'use client';
-
 import { useEffect, useRef, useState } from 'react';
 import { io }                          from 'socket.io-client';
 import { useParams, useRouter }        from 'next/navigation';
 import Navbar                          from '@/components/Navbar';
-
-const API_BASE = 'http://localhost:5000';
 
 export default function ChatPage() {
   const { recipient } = useParams();
@@ -17,7 +14,7 @@ export default function ChatPage() {
 
   // 0) Load the logged‑in user
   useEffect(() => {
-    fetch(`${API_BASE}/api/users/me`, { credentials: 'include' })
+    fetch(`http://localhost:5000/api/users/me`, { credentials: 'include' })
       .then(res => {
         if (!res.ok) throw new Error('Not logged in');
         return res.json();
@@ -29,7 +26,7 @@ export default function ChatPage() {
   // 1) Fetch history once we know who we are
   useEffect(() => {
     if (!currentUser) return;
-    fetch(`${API_BASE}/api/messages?recipient_id=${recipient}`, {
+    fetch(`http://localhost:5000/api/messages?recipient_id=${recipient}`, {
       credentials: 'include'
     })
       .then(res => res.json())
@@ -39,7 +36,7 @@ export default function ChatPage() {
   // 2) Connect socket & listen for new messages
   useEffect(() => {
     if (!currentUser) return;
-    socketRef.current = io(API_BASE, { withCredentials: true });
+    socketRef.current = io('http://localhost:5000', { withCredentials: true });
     socketRef.current.on('new_message', msg => {
       const isForThisChat =
         (msg.sender_id    === currentUser.id && msg.recipient_id === Number(recipient)) ||
@@ -54,7 +51,7 @@ export default function ChatPage() {
   // 3) Send a message
   const send = async () => {
     if (!draft.trim() || !currentUser) return;
-    await fetch(`${API_BASE}/api/messages`, {
+    await fetch(`http://localhost:5000/api/messages`, {
       method:      'POST',
       credentials: 'include',
       headers:     { 'Content-Type': 'application/json' },

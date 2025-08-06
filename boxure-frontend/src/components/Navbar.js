@@ -57,7 +57,14 @@ export default function Navbar() {
             {loggedIn ? (
               <NavigationMenuLink href="/logout" className={navigationMenuTriggerStyle()}>
               Logout
-            </NavigationMenuLink>
+              </NavigationMenuLink>
+            ) : null}
+          </NavigationMenuItem>
+          <NavigationMenuItem>
+            {loggedIn ? (
+              <NavigationMenuLink href="/messages" className={navigationMenuTriggerStyle()}>
+                messages
+              </NavigationMenuLink>
             ) : null}
           </NavigationMenuItem>
           <NavigationMenuItem>

@@ -2,12 +2,6 @@ const express = require('express');
 const router  = express.Router();
 const client  = require('../db');
 
-// auth middleware...
-function isAuthenticated(req, res, next) {
-  if (req.session?.user) return next();
-  return res.status(401).json({ message: 'Unauthorized' });
-}
-
 // GET all
 router.get('/', (req, res) => {
   client.query('SELECT * FROM messages', (err, result) => {
@@ -20,7 +14,7 @@ router.get('/', (req, res) => {
 });
 
 // POST new (with realtime emit)
-router.post('/', isAuthenticated, (req, res) => {
+router.post('/', (req, res) => {
   const { sender_id, recipient_id, content } = req.body;
   client.query(
     'INSERT INTO messages (sender_id, recipient_id, content) VALUES ($1,$2,$3) RETURNING *',
