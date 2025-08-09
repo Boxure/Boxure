@@ -82,7 +82,7 @@ function Register() {
           console.error('Display name update error:', profileError);
         }
 
-        alert('Registration successful! Please check your email for confirmation.');
+        alert('Registration successful!');
       }
 
       setForm({ email: '', username: '', password: '' });
