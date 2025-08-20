@@ -1,7 +1,7 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { createClient } from '@supabase/supabase-js';
+import { supabase } from '@/config/supabase';
 import Navbar from "@/components/Navbar";
 import { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -10,10 +10,6 @@ import { Label } from "@/components/ui/label";
 
 function Register() {
   const router = useRouter();
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-  );
   const [users, setUsers] = useState([]);
   const [form, setForm] = useState({ email: '', username: '', password: '' });
 

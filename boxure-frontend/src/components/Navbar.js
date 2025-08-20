@@ -1,7 +1,7 @@
 // import * as React from "react"
 import React, { useState, useEffect } from 'react';
 import Link from "next/link"
-import { createClient } from '@supabase/supabase-js';
+import { supabase } from '@/config/supabase';
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -15,10 +15,6 @@ import {
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 
 export default function Navbar() {
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-  );
   const [loggedIn, setLoggedIn] = useState(false);
   const [username, setUsername] = useState("");
 
