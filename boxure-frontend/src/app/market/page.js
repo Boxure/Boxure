@@ -3,7 +3,7 @@
 //The marketplace page to display all the items available for purchase
 import React, { useState, useEffect } from 'react';
 import { useRouter } from "next/navigation";
-import { createClient } from '@supabase/supabase-js';
+import { supabase } from '@/config/supabase';
 import Navbar from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
 
@@ -11,10 +11,6 @@ const QUESTION_MARK_IMG = "https://upload.wikimedia.org/wikipedia/commons/5/55/Q
 
 function Market() {
   const router = useRouter();
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-  );
   const [items, setItems] = useState([]);
   const [loggedIn, setLoggedIn] = useState(false);
   const [username, setUsername] = useState("");

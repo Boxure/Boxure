@@ -1,14 +1,10 @@
 "use client";
 import React from "react";
 import { useRouter } from "next/navigation";
-import { createClient } from '@supabase/supabase-js';
+import { supabase } from "@/config/supabase";
 
 export default function LogoutPage() {
   const router = useRouter();
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-  );
 
   const handleLogout = async () => {
     try {
