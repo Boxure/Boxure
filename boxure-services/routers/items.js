@@ -2,14 +2,30 @@
 const express = require('express');
 const router = express.Router();
 const client = require('../db'); // Import the database client
+const { createClient } = require('@supabase/supabase-js');
 
+async function isAuthenticated(req, res, next) {
+  // Create Supabase client here, after env vars are loaded
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL,
+    process.env.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY
+  );
 
-// Middleware to check if user is authenticated
-function isAuthenticated(req, res, next) {
-  if (req.session && req.session.user) {
-    return next();
-  } else {
-    return res.status(401).json({ message: 'Unauthorized' });
+  const token = req.headers.authorization?.replace('Bearer ', '');
+  
+  if (!token) {
+    return res.status(401).json({ message: 'No token provided' });
+  }
+
+  try {
+    const { data: { user }, error } = await supabase.auth.getUser(token);
+    if (error || !user) {
+      return res.status(401).json({ message: 'Invalid token' });
+    }
+    req.user = user;
+    next();
+  } catch (error) {
+    return res.status(401).json({ message: 'Token verification failed' });
   }
 }
 

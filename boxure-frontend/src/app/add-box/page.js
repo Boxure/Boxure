@@ -1,6 +1,7 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { supabase } from "@/config/supabase";
 import Navbar from "@/components/Navbar";
 import { Card, CardHeader, CardTitle, CardContent, CardFooter, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";  
@@ -15,8 +16,33 @@ export default function AddBox() {
     quantity: "",
     image_url: ""
   });
+  const [session, setSession] = useState(null);
 
   const router = useRouter();
+
+  useEffect(() => {
+    // Get current session
+    const getSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      setSession(session);
+      
+      // Redirect if not authenticated
+      if (!session) {
+        router.push('/login');
+      }
+    };
+    getSession();
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      setSession(session);
+      if (!session) {
+        router.push('/login');
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [router]);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -24,10 +50,20 @@ export default function AddBox() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    if (!session) {
+      alert('Please login first');
+      router.push('/login');
+      return;
+    }
+
     try {
       const response = await fetch('http://localhost:5000/api/items', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${session.access_token}`
+        },
         body: JSON.stringify(form),
         credentials: 'include',
       });
