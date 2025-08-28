@@ -14,13 +14,4 @@ router.get('/', (req, res) => {
   });
 });
 
-// GET /api/user/me
-router.get('/me', (req, res) => {
-  if (req.session && req.session.user) {
-    res.json({ user: req.session.user });
-  } else {
-    res.status(401).json({ user: null });
-  }
-});
-
 module.exports = router;
