@@ -10,6 +10,7 @@ const itemsRouter    = require('./routers/items');
 const authRouter     = require('./routers/auth');
 const usersRouter    = require('./routers/users');
 const messagesRouter = require('./routers/messages');
+require('dotenv').config();
 
 const app = express();
 

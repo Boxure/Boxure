@@ -21,10 +21,10 @@ router.post('/register', (req, res) => {
 
 // POST /login
 router.post('/login', (req, res) => {
-  const { email, password } = req.body;
+  const { emailOrUser, password } = req.body;
   client.query(
-    'SELECT * FROM users WHERE email = $1 AND password = $2',
-    [email, password],
+    'SELECT * FROM users WHERE (email = $1 OR username = $1) AND password = $2',
+    [emailOrUser, password],
     (err, result) => {
       if (err) {
         console.error('Error logging in', err);
