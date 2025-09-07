@@ -58,10 +58,10 @@ router.get('/:id', (req, res) => {
 
 // POST /api/items
 router.post('/', isAuthenticated, (req, res) => {
-  const { name, description, price, quantity, image_url } = req.body;
+  const { name, description, price, quantity, image_url, owner } = req.body;
   client.query(
-    'INSERT INTO items (name, description, price, quantity, image_url) VALUES ($1, $2, $3, $4, $5) RETURNING *',
-    [name, description, price, quantity, image_url],
+    'INSERT INTO items (name, description, price, quantity, image_url, owner) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
+    [name, description, price, quantity, image_url, owner],
     (err, result) => {
       if (err) {
         console.error('Error inserting item', err);

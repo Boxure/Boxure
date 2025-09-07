@@ -14,7 +14,8 @@ export default function AddBox() {
     description: "",
     price: "",
     quantity: "",
-    image_url: ""
+    image_url: "",
+      owner: ""
   });
   const [session, setSession] = useState(null);
 
@@ -48,6 +49,32 @@ export default function AddBox() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+    useEffect(() => {
+        // Check Supabase auth session and get user data
+        const getOwner = async () => {
+            try {
+                const { data: { session } } = await supabase.auth.getSession();
+
+                    // Get username from users table
+                    const { data: userData, error } = await supabase
+                        .from('users')
+                        .select('id')
+                        .eq('id', session.user.id)
+                        .single();
+
+                    if (userData && !error) {
+                        setForm({...form,["owner"]: userData.id});
+                    } else {
+                        console.log("Can't add owner");
+                    }
+            } catch (error) {
+                console.error('Get user error:', error);
+            }
+        };
+
+        getOwner();
+    }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     
@@ -71,7 +98,7 @@ export default function AddBox() {
       const data = await response.json();
       alert('Item added successfully!');
       // Optionally, reset the form:
-      setForm({ name: "", description: "", price: "", quantity: "", image_url: "" });
+      setForm({ name: "", description: "", price: "", quantity: "", image_url: "", owner: "" });
     } catch (err) {
       alert('Error: ' + err.message);
     }
