@@ -19,6 +19,10 @@ function Home() {
     router.push("/register");
   };
 
+  const handleProfile = () => {
+    router.push("/profile")}
+  ;
+
   return (
     <div>
       <Navbar className="bg-white shadow-md w-full p-4" />

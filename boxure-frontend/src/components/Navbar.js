@@ -13,8 +13,15 @@ import {
   NavigationMenuViewport,
 } from "@/components/ui/navigation-menu"
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
+import {useRouter} from "next/navigation";
 
 export default function Navbar() {
+    const router = useRouter();
+
+    const handleProfile = () => {
+        router.push("/profile");
+    };
+
   const [loggedIn, setLoggedIn] = useState(false);
   const [username, setUsername] = useState("");
 
@@ -120,9 +127,10 @@ export default function Navbar() {
             ) : null}
           </NavigationMenuItem>
           <NavigationMenuItem>
-            <Avatar className="h-8 w-8 cursor-pointer">
+            <Avatar onClick ={handleProfile} className="h-8 w-8 cursor-pointer">
               <AvatarImage src="" alt="User Avatar" />
               <AvatarFallback>CN</AvatarFallback>
+
             </Avatar>
             {/*Not  implemented yet, because profile href does not exist */}
             {/* <NavigationMenuLink href="/profile" className={navigationMenuTriggerStyle()}>
