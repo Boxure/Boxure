@@ -1,19 +1,6 @@
 FROM node:24
-
-# Set the working directory in the container
 WORKDIR /app
-
-COPY package*.json ./
-
-RUN npm install
-
-# Copy the rest of the application code
 COPY . .
-
-COPY .env .env
-
-# Expose the port the app runs on
+ENV PORT=5000
 EXPOSE 5000
-
-# Define the command to run the application
-CMD ["npm", "start"]
+CMD ["sh", "-lc", "npm install && npm start"]
