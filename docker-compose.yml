@@ -30,6 +30,11 @@ services:
       - ./boxure-services/.env
     environment:
       - NODE_ENV=development
+  
+  redis:
+    image: "redis:latest"
+    ports:
+      - "6379:6379"
 
 volumes:
   frontend_node_modules:
