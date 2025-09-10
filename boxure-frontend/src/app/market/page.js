@@ -1,14 +1,13 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import { useRouter } from "next/navigation";
 import { supabase } from '@/config/supabase';
 import Navbar from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
+import Link from 'next/link';
 
 const QUESTION_MARK_IMG = "https://upload.wikimedia.org/wikipedia/commons/5/55/Question_Mark.svg"; // public domain
 
 function Market() {
-  const router = useRouter();
   const [items, setItems] = useState([]);
   const [loggedIn, setLoggedIn] = useState(false);
   const [username, setUsername] = useState("");
@@ -69,14 +68,6 @@ function Market() {
     checkUser();
   }, []);
 
-  const handleHome = () => {
-    router.push("/home");
-  };
-
-  const handleAddBox = () => {
-    router.push("/add-box");
-  };
-
   return (
     <div className="Market">
       <Navbar className="bg-white shadow-md w-full p-4" />
@@ -88,11 +79,9 @@ function Market() {
       <p className="text-gray-500 text-lg mb-6">
         Discover unique boxes or share your own creations.
       </p>
-        <div ><Button variant="outline" onClick={handleHome}>Home</Button></div>
+        <div ><Link href="/home"><Button variant="outline">Home</Button></Link></div>
         {loggedIn ? (
-          
-          <Button onClick={handleAddBox}>Add Your Own Box</Button>
-          
+          <Link href="/add-box"><Button>Add Your Own Box</Button></Link>
         ) : (
           <p>You must be logged in to add a box.</p>
         )}
