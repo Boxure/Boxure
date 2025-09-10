@@ -89,6 +89,7 @@ function Profile() {
 
     return (
         <div>
+            <div>
             <Navbar className="bg-white shadow-md w-full p-4" />
 
             <Avatar onClick ={handleProfile} className="h-8 w-8 cursor-pointer">
@@ -97,9 +98,11 @@ function Profile() {
             </Avatar>
             <NavigationMenuItem>
                 {loggedIn ? (
-                    <p>Welcome {username}</p>
+                    <p>{username}</p>
                 ) : null}
             </NavigationMenuItem>
+            </div>
+
             <div
                 style={{
                     display: "grid",
@@ -146,8 +149,6 @@ function Profile() {
 
                 ))}
             </div>
-
-
         </div>
 
     );
