@@ -1,7 +1,7 @@
 // routes/items.js
 const express = require('express');
 const router = express.Router();
-const client = require('../db'); // Import the database client
+const { client } = require('../db'); // Import the database client
 const { createClient } = require('@supabase/supabase-js');
 
 async function isAuthenticated(req, res, next) {

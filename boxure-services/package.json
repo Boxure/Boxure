@@ -15,6 +15,7 @@
     "dotenv": "^17.2.0",
     "express": "^5.1.0",
     "express-session": "^1.18.1",
+    "ioredis": "^5.7.0",
     "pg": "^8.16.0"
   },
   "devDependencies": {
