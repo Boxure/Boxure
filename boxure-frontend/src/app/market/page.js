@@ -4,10 +4,12 @@ import { supabase } from '@/config/supabase';
 import Navbar from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 const QUESTION_MARK_IMG = "https://upload.wikimedia.org/wikipedia/commons/5/55/Question_Mark.svg"; // public domain
 
 function Market() {
+  const router = useRouter();
   const [items, setItems] = useState([]);
   const [loggedIn, setLoggedIn] = useState(false);
   const [username, setUsername] = useState("");
