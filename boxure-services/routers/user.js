@@ -1,7 +1,7 @@
 // routes/user.js
 const express = require('express');
 const router = express.Router();
-const client = require('../db'); // Import the database client
+const { client } = require('../db'); // Import the database client
 
 // GET /api/user
 router.get('/', (req, res) => {
