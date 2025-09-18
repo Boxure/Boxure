@@ -19,6 +19,7 @@
     "pg": "^8.16.0"
   },
   "devDependencies": {
+    "eslint": "^9.35.0",
     "jest": "^30.0.3",
     "supertest": "^7.1.1"
   }
