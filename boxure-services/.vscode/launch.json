@@ -1,0 +1,18 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Run server-side code with debug",
+            "command": "npm run dev",
+            "request": "launch",
+            "type": "node-terminal",
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "name": "Attach to existing Node process",
+            "processId": "${command:PickProcess}",
+            "request": "attach",
+            "type": "node"
+        }
+    ]
+}
