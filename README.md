@@ -1,14 +1,14 @@
-d# Boxure
+### Boxure
 A dedicated platform for buying, selling, and trading blind box collectibles containing random figurines or items. Whether you're a casual collector or a serious trader, this platform makes managing your collection seamless and fun.
 
 <h2>Getting Started</h2>
 
-<p>Install Prettier extension</p>
-  - This will be used to format code after each file is saved
-  - Install the prettier extension for your IDE
-  - Formatting will be automatically enabled in .vscode/settings.json
+Install Prettier extension
+- This will be used to format code after each file is saved
+- Install the prettier extension for your IDE
+- Formatting will be automatically enabled in .vscode/settings.json
 
-<p>Install ESLint</p>
+Install ESLint
  - This is used before commits to ensure that consistent code patterns are followed throughout the team
  - Install the ESLint extension for your IDE
 
