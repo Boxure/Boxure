@@ -4,13 +4,13 @@ A dedicated platform for buying, selling, and trading blind box collectibles con
 <h2>Getting Started</h2>
 
 <p>Install Prettier extension</p>
-<b>This will be used to format code after each file is saved</b>
-<b>Install the prettier extension for your IDE</b>
-<b>Formatting will be automatically enabled in .vscode/settings.json</b>
+  - This will be used to format code after each file is saved
+  - Install the prettier extension for your IDE
+  - Formatting will be automatically enabled in .vscode/settings.json
 
 <p>Install ESLint</p>
-<b>This is used before commits to ensure that consistent code patterns are followed throughout the team</b>
-<p>Install the ESLint extension for your IDE</p>
+ - This is used before commits to ensure that consistent code patterns are followed throughout the team
+ - Install the ESLint extension for your IDE
 
 <p>To connect and run SQL commands, use:</p>
 <pre><code>docker exec -it boxure-db-1 psql -U postgres -d test_db</code></pre>
