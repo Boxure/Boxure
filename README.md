@@ -1,7 +1,16 @@
-d# Boxure
+### Boxure
 A dedicated platform for buying, selling, and trading blind box collectibles containing random figurines or items. Whether you're a casual collector or a serious trader, this platform makes managing your collection seamless and fun.
 
 <h2>Getting Started</h2>
+
+Install Prettier extension
+- This will be used to format code after each file is saved
+- Install the prettier extension for your IDE
+- Formatting will be automatically enabled in .vscode/settings.json
+
+Install ESLint
+ - This is used before commits to ensure that consistent code patterns are followed throughout the team
+ - Install the ESLint extension for your IDE
 
 <p>To connect and run SQL commands, use:</p>
 <pre><code>docker exec -it boxure-db-1 psql -U postgres -d test_db</code></pre>
@@ -21,5 +30,3 @@ A dedicated platform for buying, selling, and trading blind box collectibles con
 <p>Page files are their page-specific components are under src/app/'page-name'</p>
 <p>Config files such as firebase.js will go under src/config</p>
 <p>Global css will go under src/styles<p>
-
-
