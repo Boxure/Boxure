@@ -1,0 +1,12 @@
+.DS_Store
+.env
+/.cache
+/.github
+/.vscode
+/docs
+.certs
+.vscode
+@overrides
+ci
+docs
+*.log
