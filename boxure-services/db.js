@@ -1,7 +1,7 @@
-const { Client } = require('pg');
-const Redis = require('ioredis');
+import Redis from "ioredis";
+import { Client } from "pg";
 
-const client = new Client({
+export const client = new Client({
   user: process.env.DB_USER,
   host: process.env.DB_HOST,
   database: process.env.DB_NAME,
@@ -10,9 +10,7 @@ const client = new Client({
 });
 client.connect();
 
-const redis = new Redis({
-  host: 'redis', // use the service name from docker-compose
-  port: 6379
+export const redis = new Redis({
+  host: "redis", // use the service name from docker-compose
+  port: 6379,
 });
-
-module.exports = { client, redis };
