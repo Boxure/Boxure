@@ -6,6 +6,7 @@ import session from "express-session";
 
 import authRouter from "./routers/auth.js";
 import cartRouter from "./routers/cart.js";
+import checkoutRouter from "./routers/checkout.js";
 import itemsRouter from "./routers/items.js";
 import userRouter from "./routers/user.js";
 
@@ -31,6 +32,7 @@ app.use("/api/items", itemsRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
 app.use("/api/cart", cartRouter);
+app.use("/api/checkout", checkoutRouter);
 
 app.listen(5000, () => {
   console.log("Backend is running on port 5000 at http://localhost:5000");
