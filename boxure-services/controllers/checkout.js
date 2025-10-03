@@ -114,6 +114,16 @@ export async function createStripeCheckoutSession(req, res) {
       mode: "payment",
       success_url: `${process.env.CLIENT_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${process.env.CLIENT_URL}/shopping-bag`,
+      billing_address_collection: "required",
+      shipping_address_collection: {
+        allowed_countries: ["US", "CA"],
+      },
+      payment_method_types: ["card", "cashapp", "wechat_pay"],
+      payment_method_options: {
+        wechat_pay: {
+          client: "web",
+        },
+      },
     });
 
     res.status(200).json({ url: session.url });

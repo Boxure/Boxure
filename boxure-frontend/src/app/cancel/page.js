@@ -1,38 +1,41 @@
 "use client";
 
 import Navbar from "@/components/Navbar";
-import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 export default function Cancel() {
+  const router = useRouter();
+
+  const handleHome = () => {
+    router.push("/home");
+  };
+
+  const handleShopping = () => {
+    router.push("/shopping-bag");
+  };
+
   return (
     <>
-      <Navbar />
-      <div className="min-h-screen bg-gray-100 p-6">
-        <h2 className="text-3xl font-semibold border-b pb-2 mb-6 text-center">Payment Canceled 😞</h2>
-        <div className="flex flex-col lg:flex-row gap-8 max-w-6xl mx-auto">
-          <div className="w-full lg:w-2/3">
-            <p>Your payment was not completed. No charges have been made.</p>
-            <p>If you intended to complete the purchase, please return to your cart and try again.</p>
-          </div>
-          <div className="w-full lg:w-1/3">
-            <button
-              className="mt-6 w-full bg-black text-white py-3 px-4 rounded hover:bg-gray-800 transition-colors"
-              type="link"
-              href="/"
-            >
-              Continue Shopping
-            </button>
+      <Navbar className="bg-white shadow-md w-full p-4" />
+      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+        <h1 className="text-4xl font-extrabold text-gray-800 text-center mb-2">Payment Canceled 😞</h1>
+        <p className="text-lg mb-6 text-center">
+          Your payment was not completed. No charges have been made.
+          <br />
+          If you intended to complete the purchase, please return to your cart and try again.
+          <br />
+        </p>
+        <div className="pr-14 text-center">
+          <Button variant="outline" onClick={handleHome}>
+            Continue Shopping
+          </Button>
 
-            {" | "}
-            <button
-              className="mt-6 w-full bg-black text-white py-3 px-4 rounded hover:bg-gray-800 transition-colors"
-              type="link"
-              href="/"
-            >
-              View Cart
-            </button>
-          </div>
+          {" | "}
+          <Button variant="outline" onClick={handleShopping}>
+            View Cart
+          </Button>
         </div>
       </div>
     </>
