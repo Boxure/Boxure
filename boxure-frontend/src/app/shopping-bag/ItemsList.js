@@ -42,7 +42,7 @@ const ItemsList = ({ items, onQuantityChange, onRemove }) => {
                 />
               </TableCell>
               <TableCell>{item.name}</TableCell>
-              <TableCell>${item.price.toFixed(2)}</TableCell>
+              <TableCell>${item.price}</TableCell>
               <TableCell>
                 <input
                   type="number"
