@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import React, { useState, useEffect } from 'react';
 import ItemsList from './ItemsList';
@@ -58,11 +58,11 @@ const ShoppingBagPage = () => {
   if (!userId) return <div>Please log in to view your shopping bag.</div>;
 
   const handleQuantityChange = (id, quantity) => {
-    setItems(prev =>
-      prev.map(item =>
-        item.id === id ? { ...item, quantity } : item
-      )
-    );
+    setItems((prev) => prev.map((item) => (item.id === id ? { ...item, quantity } : item)));
+  };
+
+  const handleRemove = (id) => {
+    setItems((prev) => prev.filter((item) => item.id !== id));
   };
   // Delete items from redis cart
   const handleRemove = async (itemId) => {
@@ -90,6 +90,28 @@ const ShoppingBagPage = () => {
         console.error('Error removing item:', error);
       }
     };
+  const handleCheckout = async () => {
+    const items = [
+      { productId: 10, quantity: 1 },
+      { productId: 11, quantity: 1 },
+    ];
+    const response = await fetch(`${process.env.NEXT_PUBLIC_EXPRESS_URL}/api/checkout/create-checkout-session`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ items }),
+    });
+
+    const responseData = await response.json();
+
+    if (response.ok) {
+      // Redirect to Stripe Checkout
+      window.location.href = responseData.url; // Use window.location.href for redirection
+    } else {
+      // Handle validation errors or other server errors
+      console.error("Checkout failed:", responseData.error);
+      alert("Checkout failed: " + responseData.error); // Show error to user
+    }
+  };
 
   return (
     <>
@@ -98,19 +120,14 @@ const ShoppingBagPage = () => {
         <h2 className="text-3xl font-semibold border-b pb-2 mb-6">Shopping Bag</h2>
         <div className="flex flex-col lg:flex-row gap-8 max-w-6xl mx-auto">
           <div className="w-full lg:w-2/3">
-            <ItemsList
-              items={items}
-              onQuantityChange={handleQuantityChange}
-              onRemove={handleRemove}
-            />
+            <ItemsList items={items} onQuantityChange={handleQuantityChange} onRemove={handleRemove} />
           </div>
           <div className="w-full lg:w-1/3">
             <PriceSummary items={items} />
             <button
               className="mt-6 w-full bg-black text-white py-3 px-4 rounded hover:bg-gray-800 transition-colors"
-              onClick={() => {
-                alert('Proceeding to purchase...');
-              }}
+              type="submit"
+              onClick={handleCheckout}
             >
               Purchase
             </button>
