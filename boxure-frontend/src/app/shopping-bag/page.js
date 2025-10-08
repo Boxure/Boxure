@@ -1,37 +1,92 @@
 "use client";
 
-import Navbar from "@/components/Navbar";
-import React, { useState } from "react";
-import ItemsList from "./ItemsList";
-import PriceSummary from "./PriceSummary";
+import React, { useState, useEffect } from 'react';
+import ItemsList from './ItemsList';
+import Navbar from '@/components/Navbar';
+import PriceSummary from './PriceSummary';
+import { supabase } from '@/config/supabase';
 
 const ShoppingBagPage = () => {
-  const [items, setItems] = useState([
-    {
-      id: 1,
-      name: "Kirby Box",
-      price: 19.99,
-      quantity: 2,
-      image: "https://us.toybeta.com/cdn/shop/files/baobaobox_1.jpg?v=1716630769",
-    },
-    { id: 2, name: "Labubu", price: 49.99, quantity: 1 }, // will use default
-    {
-      id: 3,
-      name: "Snoopy Summer Edition",
-      price: 89.99,
-      quantity: 1,
-      image: "https://us.toybeta.com/cdn/shop/files/baobaobox_1.jpg?v=1716630769",
-    },
-  ]);
+  const [items, setItems] = useState([]);
+  const [userId, setUserId] = useState("");
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const getUserId = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        setUserId(user.id); // Store user ID in state
+      }
+      setLoading(false);
+    };
+    getUserId();
+  }, []);
+
+  useEffect(() => {
+    // Fetch items from redis cart database
+    const fetchCart = async () => {
+      if (!userId) {
+        alert('User not logged in.');
+        return;
+      }
+      try {
+        const response = await fetch(`http://localhost:5000/api/cart/${userId}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          credentials: 'include',
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setItems(data); // update items state with data from Redis
+        } else {
+          alert('Failed to fetch cart.');
+        }
+      } catch (error) {
+        console.error('Error fetching cart:', error);
+      }
+    };
+    if (userId){
+      fetchCart();
+    }
+      
+  }, [userId]);
+
+  if (loading) return <div>Loading...</div>;
+  if (!userId) return <div>Please log in to view your shopping bag.</div>;
 
   const handleQuantityChange = (id, quantity) => {
     setItems((prev) => prev.map((item) => (item.id === id ? { ...item, quantity } : item)));
   };
 
-  const handleRemove = (id) => {
-    setItems((prev) => prev.filter((item) => item.id !== id));
-  };
+  // Delete items from redis cart
+  const handleRemove = async (itemId) => {
+      if (!userId) {
+        alert('User not logged in.');
+        return;
+      }
+      try {
+        const response = await fetch(`http://localhost:5000/api/cart/${userId}/remove`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          credentials: 'include',
+          body: JSON.stringify({ itemId: itemId })
+        });
 
+        if (response.ok) {
+          // If the server successfully removes the item, update the local state
+          setItems(prev => prev.filter(item => item.id !== itemId));
+        } else {
+          alert('Failed to remove item(s) from cart.');
+        }
+      } catch (error) {
+        console.error('Error removing item:', error);
+      }
+    };
   const handleCheckout = async () => {
     const items = [
       { productId: 10, quantity: 1 },
