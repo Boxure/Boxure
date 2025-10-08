@@ -61,9 +61,6 @@ const ShoppingBagPage = () => {
     setItems((prev) => prev.map((item) => (item.id === id ? { ...item, quantity } : item)));
   };
 
-  const handleRemove = (id) => {
-    setItems((prev) => prev.filter((item) => item.id !== id));
-  };
   // Delete items from redis cart
   const handleRemove = async (itemId) => {
       if (!userId) {
