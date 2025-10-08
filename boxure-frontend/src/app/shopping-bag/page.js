@@ -20,10 +20,32 @@ const ShoppingBagPage = () => {
       )
     );
   };
+  // Delete items from redis cart
+  const handleRemove = async (itemId) => {
+      if (!userId) {
+        alert('User not logged in.');
+        return;
+      }
+      try {
+        const response = await fetch(`http://localhost:5000/api/cart/${userId}/remove`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          credentials: 'include',
+          body: JSON.stringify({ itemId: itemId })
+        });
 
-  const handleRemove = id => {
-    setItems(prev => prev.filter(item => item.id !== id));
-  };
+        if (response.ok) {
+          // If the server successfully removes the item, update the local state
+          setItems(prev => prev.filter(item => item.id !== itemId));
+        } else {
+          alert('Failed to remove item(s) from cart.');
+        }
+      } catch (error) {
+        console.error('Error removing item:', error);
+      }
+    };
 
   return (
     <>
