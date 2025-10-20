@@ -47,8 +47,40 @@ const ItemsList = ({ items, onQuantityChange, onRemove }) => {
                 <input
                   type="number"
                   min="1"
-                  value={item.quantity}
-                  onChange={(e) => onQuantityChange(item.id, e.target.value)}
+                  // if availableQuantity exists, expose it as max
+                  max={item.availableQuantity ? item.availableQuantity : undefined}
+                  // ensure the input always shows a sensible default (1), but allow empty string while editing
+                  value={item.quantity === '' ? '' : (typeof item.quantity === 'number' ? item.quantity : 1)}
+                  onChange={(e) => {
+                    const inputValue = e.target.value;
+
+                    // Allow empty string temporarily (when user clears input)
+                    if (inputValue === '') {
+                      onQuantityChange(item.id, '');
+                      return;
+                    }
+
+                    const raw = Number(inputValue);
+                    // Ignore invalid numbers
+                    if (isNaN(raw) || raw < 1) {
+                      return;
+                    }
+
+                    const max = typeof item.availableQuantity === 'number' ? item.availableQuantity : null;
+
+                    // Clamp to max only if max exists and raw exceeds it
+                    if (max !== null && raw > max) {
+                      onQuantityChange(item.id, max);
+                    } else {
+                      onQuantityChange(item.id, raw);
+                    }
+                  }}
+                  onBlur={(e) => {
+                    // When user leaves the input, ensure it has a valid value
+                    if (e.target.value === '' || Number(e.target.value) < 1) {
+                      onQuantityChange(item.id, 1);
+                    }
+                  }}
                   className="w-16 border rounded px-2 py-1"
                 />
               </TableCell>
