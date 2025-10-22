@@ -35,14 +35,12 @@ export const LoginModal = ({ isOpen, onClose }) => {
             className="max-w-md max-h-full overflow-hidden rounded-2xl bg-white p-6 box-border text-left align-middle shadow-xl outline-hidden relative"
           >
             <Heading slot="title" className="text-xxl font-semibold leading-6 my-0 text-slate-700">
-              You must be logged in to add Item to your cart
+              Please login to add this item to your cart
             </Heading>
             <div className="w-6 h-6 text-red-500 absolute right-6 top-6 stroke-2">
               <AlertTriangle className="w-6 h-6" />
             </div>
-            <p className="mt-3 text-slate-500">
-              Please login below or close the modal to continue browsing the marketplace
-            </p>
+            <p className="mt-3 text-slate-500">You must be logged in to add this item to your cart.</p>
             <div className="mt-6 flex justify-end gap-2">
               <DialogButton
                 className="bg-slate-200 text-slate-800 hover:border-slate-300 pressed:bg-slate-300"
