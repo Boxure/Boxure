@@ -44,7 +44,19 @@ const ShoppingBagPage = () => {
 
         if (response.ok) {
           const data = await response.json();
-          setItems(data); // update items state with data from Redis
+          // Normalize items coming from Redis: keep any available/stock quantity
+          // in `availableQuantity` and set the cart `quantity` to the stored
+          // cart value if present, otherwise default to 1 to avoid showing
+          // the product's total/stock quantity as the cart quantity.
+          const normalized = data.map(it => ({
+            ...it,
+            // keep the product/stock quantity separate
+            availableQuantity: it.quantity ?? it.availableQuantity ?? null,
+            // use a cart-specific quantity if present, otherwise default to 1
+            quantity: Number(it.cartQuantity ?? 1) || 1,
+          }));
+          console.debug('fetched cart items:', data, 'normalized:', normalized);
+          setItems(normalized); // update items state with normalized data
         } else {
           alert("Failed to fetch cart.");
         }
@@ -58,7 +70,13 @@ const ShoppingBagPage = () => {
   }, [userId]);
 
   const handleQuantityChange = (id, quantity) => {
-    setItems((prev) => prev.map((item) => (item.id === id ? { ...item, quantity } : item)));
+    // Allow empty string to pass through for editing, otherwise convert to number
+    const qty = quantity === '' ? '' : (Number(quantity) || 1);
+    setItems(prev =>
+      prev.map(item =>
+        item.id === id ? { ...item, quantity: qty } : item
+      )
+    );
   };
 
   // Delete items from redis cart
