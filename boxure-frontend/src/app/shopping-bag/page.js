@@ -1,19 +1,23 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
-import ItemsList from './ItemsList';
-import Navbar from '@/components/Navbar';
-import PriceSummary from './PriceSummary';
-import { supabase } from '@/config/supabase';
+import Navbar from "@/components/Navbar";
+import { Button } from "@/components/ui/button";
+import { supabase } from "@/config/supabase";
+import Link from "next/link";
+import React, { useEffect, useState } from "react";
+import ItemsList from "./ItemsList";
+import PriceSummary from "./PriceSummary";
 
 const ShoppingBagPage = () => {
   const [items, setItems] = useState([]);
   const [userId, setUserId] = useState("");
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const getUserId = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
       if (user) {
         setUserId(user.id); // Store user ID in state
       }
@@ -26,36 +30,32 @@ const ShoppingBagPage = () => {
     // Fetch items from redis cart database
     const fetchCart = async () => {
       if (!userId) {
-        alert('User not logged in.');
+        alert("User not logged in.");
         return;
       }
       try {
         const response = await fetch(`http://localhost:5000/api/cart/${userId}`, {
-          method: 'GET',
+          method: "GET",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
-          credentials: 'include',
+          credentials: "include",
         });
 
         if (response.ok) {
           const data = await response.json();
           setItems(data); // update items state with data from Redis
         } else {
-          alert('Failed to fetch cart.');
+          alert("Failed to fetch cart.");
         }
       } catch (error) {
-        console.error('Error fetching cart:', error);
+        console.error("Error fetching cart:", error);
       }
     };
-    if (userId){
+    if (userId) {
       fetchCart();
     }
-      
   }, [userId]);
-
-  if (loading) return <div>Loading...</div>;
-  if (!userId) return <div>Please log in to view your shopping bag.</div>;
 
   const handleQuantityChange = (id, quantity) => {
     setItems((prev) => prev.map((item) => (item.id === id ? { ...item, quantity } : item)));
@@ -63,30 +63,30 @@ const ShoppingBagPage = () => {
 
   // Delete items from redis cart
   const handleRemove = async (itemId) => {
-      if (!userId) {
-        alert('User not logged in.');
-        return;
-      }
-      try {
-        const response = await fetch(`http://localhost:5000/api/cart/${userId}/remove`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          credentials: 'include',
-          body: JSON.stringify({ itemId: itemId })
-        });
+    if (!userId) {
+      alert("User not logged in.");
+      return;
+    }
+    try {
+      const response = await fetch(`http://localhost:5000/api/cart/${userId}/remove`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({ itemId: itemId }),
+      });
 
-        if (response.ok) {
-          // If the server successfully removes the item, update the local state
-          setItems(prev => prev.filter(item => item.id !== itemId));
-        } else {
-          alert('Failed to remove item(s) from cart.');
-        }
-      } catch (error) {
-        console.error('Error removing item:', error);
+      if (response.ok) {
+        // If the server successfully removes the item, update the local state
+        setItems((prev) => prev.filter((item) => item.id !== itemId));
+      } else {
+        alert("Failed to remove item(s) from cart.");
       }
-    };
+    } catch (error) {
+      console.error("Error removing item:", error);
+    }
+  };
   const handleCheckout = async () => {
     const items = [
       { productId: 10, quantity: 1 },
@@ -110,7 +110,11 @@ const ShoppingBagPage = () => {
     }
   };
 
-  return (
+  return loading ? (
+    <div className="flex items-center justify-center min-h-screen">
+      <h1 className="text-2xl">Loading...</h1>
+    </div>
+  ) : userId ? (
     <>
       <Navbar />
       <div className="min-h-screen bg-gray-100 p-6">
@@ -129,6 +133,24 @@ const ShoppingBagPage = () => {
               Purchase
             </button>
           </div>
+        </div>
+      </div>
+    </>
+  ) : (
+    <>
+      <Navbar className="bg-white shadow-md w-full p-4" />
+      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+        <h1 className="text-3xl font-bold mb-4">Please log in to view your shopping bag.</h1>
+        <div className="flex space-x-4">
+          <Link href="/market">
+            <Button>Market</Button>
+          </Link>
+          <Link href="/login">
+            <Button>Login</Button>
+          </Link>
+          <Link href="/register">
+            <Button>Register</Button>
+          </Link>
         </div>
       </div>
     </>
