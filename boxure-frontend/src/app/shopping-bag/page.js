@@ -106,14 +106,16 @@ const ShoppingBagPage = () => {
     }
   };
   const handleCheckout = async () => {
-    const items = [
-      { productId: 10, quantity: 1 },
-      { productId: 11, quantity: 1 },
-    ];
+    // Map the items from state to the format expected by the checkout endpoint
+    const checkoutItems = items.map(item => ({
+      productId: item.id,
+      quantity: item.quantity
+    }));
+
     const response = await fetch(`${process.env.NEXT_PUBLIC_EXPRESS_URL}/api/checkout/create-checkout-session`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ items }),
+      body: JSON.stringify({ items: checkoutItems }),
     });
 
     const responseData = await response.json();
