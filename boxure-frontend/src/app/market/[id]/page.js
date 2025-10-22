@@ -40,15 +40,11 @@ export default function ItemDetail() {
 
   const closeModal = () => setShowLogInModal(false);
 
-  const handleAddItem = (item) => {
+  const addToCart = async (item) => {
     if (!userId) {
       setShowLogInModal(true);
       return;
     }
-    addToCart(item);
-  };
-
-  const addToCart = async (item) => {
     const response = await fetch(`http://localhost:5000/api/cart/${userId}/add`, {
       method: "POST",
       headers: {
@@ -87,7 +83,13 @@ export default function ItemDetail() {
             </p>
             <br />
             <div className="justify-self-center">
-              <Button onClick={handleAddItem}>Add to Cart</Button>
+              <Button
+                onClick={() => {
+                  addToCart(item);
+                }}
+              >
+                Add to Cart
+              </Button>
             </div>
           </div>
           <div className="justify-self-center">
