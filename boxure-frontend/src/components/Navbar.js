@@ -13,10 +13,13 @@ import {
   NavigationMenuViewport,
 } from "@/components/ui/navigation-menu"
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
+import { usePathname } from 'next/navigation';
 
 export default function Navbar() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [username, setUsername] = useState("");
+  const pathname = usePathname();
+
 
   useEffect(() => {
     // Check Supabase auth session and get user data
@@ -82,25 +85,33 @@ export default function Navbar() {
       <h1 className="text-2xl font-bold">Boxure</h1>
       <NavigationMenu className="w-full mr-2">
         <NavigationMenuList className="gap-1 items-end">
-          <NavigationMenuItem>
-            <NavigationMenuLink href="/" className={navigationMenuTriggerStyle()}>
-              Home
-            </NavigationMenuLink>
+          <NavigationMenuItem className=''>
+            {pathname !== "/home" ? (
+              <NavigationMenuLink href="/home" className={navigationMenuTriggerStyle()}>
+                Home
+              </NavigationMenuLink>
+            ) : null}
           </NavigationMenuItem>
           <NavigationMenuItem>
-            <NavigationMenuLink href="/market" className={navigationMenuTriggerStyle()}>
-              Marketplace
-            </NavigationMenuLink>
+            {pathname !== "/market" ? (
+              <NavigationMenuLink href="/market" className={navigationMenuTriggerStyle()}>
+                Marketplace
+              </NavigationMenuLink>
+            ) : null}
           </NavigationMenuItem>
           <NavigationMenuItem>
-            <NavigationMenuLink href="/login" className={navigationMenuTriggerStyle()}>
-              Login
-            </NavigationMenuLink>
+            {pathname !== "/login" ? (
+              <NavigationMenuLink href="/login" className={navigationMenuTriggerStyle()}>
+                Login
+              </NavigationMenuLink>
+            ) : null}
           </NavigationMenuItem>
           <NavigationMenuItem>
-            <NavigationMenuLink href="/register" className={navigationMenuTriggerStyle()}>
-              Register
-            </NavigationMenuLink>
+            {pathname !== "/register" ? (
+              <NavigationMenuLink href="/register" className={navigationMenuTriggerStyle()}>
+                Register
+              </NavigationMenuLink>
+            ) : null}
           </NavigationMenuItem>
           <NavigationMenuItem>
             {loggedIn ? (
